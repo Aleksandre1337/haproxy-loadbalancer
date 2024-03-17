@@ -1,0 +1,58 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Include variables
+      include_vars: vars.yaml
+
+    - name: Update Repository Cache
+      command: apt update -y
+
+    - name: Upgrade Packages
+      command: apt upgrade -y
+
+    - name: Install NGINX
+      apt:
+        name: nginx
+        state: present
+
+    - name: Add user
+      user:
+        name: "{{ user }}"
+        state: present
+        shell: /bin/bash
+        password: "{{ password }}"
+        groups: sudo
+        append: yes
+
+    - name: Copy make_html script
+      copy:
+        src: "scripts/make_html.sh"
+        dest: "/home/{{ user }}/make_html.sh"
+        mode: '0755'
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        backup: yes
+
+    - name: Run make_html script
+      command: /home/{{ user }}/make_html.sh
+
+    - name: Start NGINX
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Make .ssh directory
+      file:
+        path: /home/{{ user }}/.ssh/
+        state: directory
+
+    - name: Append public key to authorized_keys
+      copy:
+        dest: "/home/{{ user }}/.ssh/authorized_keys"
+        content: "{{ lookup('file', '/home/alex/.ssh/alex_key.pub') }}"
+        mode: '0600'
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        backup: yes

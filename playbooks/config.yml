@@ -1,0 +1,14 @@
+---
+
+configs:
+  memory: 2048
+  cpus: 2
+  box: generic/ubuntu2204
+  base_ip: 192.168.100.21
+  nodes:
+  - name: haproxy
+    playbook: playbooks/haproxy.yaml
+  - name: nginx1
+    playbook: playbooks/nginx1.yaml
+  - name: nginx2
+    playbook: playbooks/nginx2.yaml
