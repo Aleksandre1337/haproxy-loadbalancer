@@ -27,7 +27,7 @@ This project automatically sets up a round-robin load balancer using HAProxy and
 
 4. Clone this repository and navigate to the project directory in the WSL environment.
 
-5. Generate both Private and Public SSH keys (Usually generated at - C:\Users\yourusername\.ssh)
+5. Generate both Private and Public SSH keys (Usually generated at - C:\Users\yourusername\.ssh\yourkey.ssh)
 
 6. Update the nginx1, nginx2 and haproxy configuration files according to your newly generated SSH keys
 
